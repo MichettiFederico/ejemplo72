@@ -322,4 +322,513 @@
     width: 100%;
     max-width: 600px;
     max-height: 85vh;
-    border
+    border-radius: 28px 28px 0 0;
+    border-top: 1px solid #272730;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .cart-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #1c1c24;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-header h2 { font-size: 1.3rem; font-weight: 800; }
+
+  .close-btn {
+    background: #18181e;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--muted);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .close-btn:hover {
+    background: #272730;
+    color: white;
+  }
+
+  .cart-items {
+    overflow-y: auto;
+    padding: 16px 24px;
+    flex: 1;
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #18181e;
+  }
+
+  .cart-item-name { font-weight: 700; font-size: 0.95rem; }
+  .cart-item-price { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+
+  .cart-item-remove {
+    background: rgba(239, 68, 68, 0.15);
+    border: none;
+    color: #ef4444;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .cart-item-remove:hover {
+    background: rgba(239, 68, 68, 0.3);
+  }
+
+  .empty-cart {
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 20px;
+    font-weight: 500;
+  }
+
+  .cart-footer {
+    padding: 20px 24px 28px;
+    border-top: 1px solid #18181e;
+    background: #000000;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
+
+  .form-group { margin-bottom: 12px; }
+
+  .form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #272730;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #121216;
+    color: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--primary);
+  }
+
+  .checkout-btn {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .checkout-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+  }
+
+  .checkout-btn:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+
+  .checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍔 Mi Negocio</h1>
+  <p>Hacé tu pedido y te lo confirmamos por WhatsApp</p>
+</header>
+
+<div class="categories-wrapper">
+  <div class="categories" id="categories"></div>
+</div>
+
+<main id="menu"></main>
+
+<div class="cart-bar" id="cartBar" onclick="openCart()">
+  <div class="left">
+    <span class="cart-count" id="cartCount">0</span>
+    <span>Ver mi pedido</span>
+  </div>
+  <div id="cartBarTotal" style="font-weight: 800; font-size: 1.1rem;">$0</div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeCartOutside(event)">
+  <div class="cart-modal">
+    <div class="cart-header">
+      <h2>Tu pedido</h2>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total</span>
+        <span id="cartTotal">$0</span>
+      </div>
+
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input type="text" id="custName" placeholder="Ej: Juan Pérez">
+      </div>
+      <div class="form-group">
+        <label>Modalidad</label>
+        <select id="custMode">
+          <option value="Retiro en local">Retiro en local</option>
+          <option value="Envío a domicilio">Envío a domicilio</option>
+        </select>
+      </div>
+      <div class="form-group" id="addressGroup" style="display:none;">
+        <label>Dirección de envío</label>
+        <input type="text" id="custAddress" placeholder="Calle, número, depto...">
+      </div>
+      <div class="form-group">
+        <label>Aclaraciones (opcional)</label>
+        <textarea id="custNotes" rows="2" placeholder="Ej: Sin cebolla, pagar con débito..."></textarea>
+      </div>
+
+      <button class="checkout-btn" id="checkoutBtn" onclick="enviarPedido()">
+        📲 Enviar pedido por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>NOMBRE DE EMPRESA</footer>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN — EDITÁ TUS DATOS Y PRODUCTOS AQUÍ
+   ============================================================ */
+
+const WHATSAPP_NUMBER = "5492281552807"; 
+
+const MENU = [
+  {
+    categoria: "Hamburguesas",
+    productos: [
+      { 
+        id: 1, 
+        nombre: "Hamburguesa Clásica", 
+        desc: "Carne jugosa, queso cheddar, lechuga fresca, tomate y salsa especial.", 
+        precio: 4500,
+        imagen: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80" 
+      },
+      { 
+        id: 2, 
+        nombre: "Hamburguesa Doble Cheddar", 
+        desc: "Doble carne artesanal, doble queso cheddar fundido y panceta crocante.", 
+        precio: 6200,
+        imagen: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800&q=80" 
+      },
+      { 
+        id: 3, 
+        nombre: "Hamburguesa Veggie", 
+        desc: "Medallón de garbanzos y especias, palta fresca, rúcula y mayo veggie.", 
+        precio: 4800,
+        imagen: "https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?w=800&q=80" 
+      },
+    ]
+  },
+  {
+    categoria: "Papas",
+    productos: [
+      { 
+        id: 4, 
+        nombre: "Papas Fritas Tradicionales", 
+        desc: "Porción individual súper crocantes y doradas.", 
+        precio: 2200,
+        imagen: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=800&q=80" 
+      },
+      { 
+        id: 5, 
+        nombre: "Papas Cheddar & Bacon", 
+        desc: "Porción abundante bañada en abundante queso cheddar y panceta tostada.", 
+        precio: 3500,
+        imagen: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=800&q=80" 
+      },
+    ]
+  },
+  {
+    categoria: "Bebidas",
+    productos: [
+      { 
+        id: 6, 
+        nombre: "Gaseosa 500ml", 
+        desc: "Línea Coca-Cola helada (especificar sabor en aclaraciones).", 
+        precio: 1800,
+        imagen: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=800&q=80" 
+      },
+      { 
+        id: 7, 
+        nombre: "Cerveza Artesanal", 
+        desc: "Lata 473ml helada - Estilos disponibles: IPA / Honey / APA.", 
+        precio: 3200,
+        imagen: "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=800&q=80" 
+      },
+    ]
+  },
+];
+
+/* ============================================================
+   LÓGICA DEL SISTEMA
+   ============================================================ */
+
+let cart = {}; 
+
+function formatPrice(n) {
+  return "$" + n.toLocaleString("es-AR");
+}
+
+function renderCategories() {
+  const cont = document.getElementById("categories");
+  cont.innerHTML = "";
+  MENU.forEach((cat, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "cat-btn" + (idx === 0 ? " active" : "");
+    btn.textContent = cat.categoria;
+    btn.onclick = () => {
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("cat-" + idx).scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    cont.appendChild(btn);
+  });
+}
+
+function renderMenu() {
+  const main = document.getElementById("menu");
+  main.innerHTML = "";
+  MENU.forEach((cat, idx) => {
+    const title = document.createElement("div");
+    title.className = "section-title";
+    title.id = "cat-" + idx;
+    title.textContent = cat.categoria;
+    main.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "products-grid";
+
+    cat.productos.forEach(prod => {
+      const item = document.createElement("div");
+      item.className = "item";
+      
+      const imgHTML = prod.imagen 
+        ? `<div class="item-img-container"><img src="${prod.imagen}" alt="${prod.nombre}" class="item-img" loading="lazy"></div>` 
+        : '';
+
+      item.innerHTML = `
+        ${imgHTML}
+        <div class="item-content">
+          <div class="item-info">
+            <h3>${prod.nombre}</h3>
+            <p>${prod.desc}</p>
+          </div>
+          <div class="item-bottom">
+            <div class="item-price">${formatPrice(prod.precio)}</div>
+            <div class="controls" id="controls-${prod.id}"></div>
+          </div>
+        </div>
+      `;
+      grid.appendChild(item);
+    });
+
+    main.appendChild(grid);
+    cat.productos.forEach(prod => renderControls(prod));
+  });
+}
+
+function renderControls(prod) {
+  const cont = document.getElementById("controls-" + prod.id);
+  if (!cont) return;
+  const inCart = cart[prod.id];
+  if (!inCart) {
+    cont.innerHTML = `<button class="add-btn" onclick="addToCart(${prod.id})">Agregar</button>`;
+  } else {
+    cont.innerHTML = `
+      <div class="qty-control">
+        <button onclick="changeQty(${prod.id}, -1)">−</button>
+        <span>${inCart.cantidad}</span>
+        <button onclick="changeQty(${prod.id}, 1)">+</button>
+      </div>
+    `;
+  }
+}
+
+function findProduct(id) {
+  for (const cat of MENU) {
+    const p = cat.productos.find(p => p.id === id);
+    if (p) return p;
+  }
+}
+
+function addToCart(id) {
+  const prod = findProduct(id);
+  cart[id] = { producto: prod, cantidad: 1 };
+  renderControls(prod);
+  updateCartBar();
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].cantidad += delta;
+  if (cart[id].cantidad <= 0) {
+    delete cart[id];
+  }
+  renderControls(findProduct(id));
+  updateCartBar();
+  renderCartModal();
+}
+
+function getTotal() {
+  return Object.values(cart).reduce((sum, c) => sum + c.producto.precio * c.cantidad, 0);
+}
+
+function getCount() {
+  return Object.values(cart).reduce((sum, c) => sum + c.cantidad, 0);
+}
+
+function updateCartBar() {
+  const bar = document.getElementById("cartBar");
+  const count = getCount();
+  document.getElementById("cartCount").textContent = count;
+  document.getElementById("cartBarTotal").textContent = formatPrice(getTotal());
+  bar.classList.toggle("show", count > 0);
+}
+
+function renderCartModal() {
+  const cont = document.getElementById("cartItems");
+  const entries = Object.values(cart);
+  if (entries.length === 0) {
+    cont.innerHTML = `<div class="empty-cart">Tu carrito está vacío 🛒</div>`;
+    document.getElementById("checkoutBtn").disabled = true;
+  } else {
+    cont.innerHTML = entries.map(c => `
+      <div class="cart-item">
+        <div>
+          <div class="cart-item-name">${c.cantidad}x ${c.producto.nombre}</div>
+          <div class="cart-item-price">${formatPrice(c.producto.precio * c.cantidad)}</div>
+        </div>
+        <button class="cart-item-remove" onclick="changeQty(${c.producto.id}, -${c.cantidad})">Eliminar</button>
+      </div>
+    `).join("");
+    document.getElementById("checkoutBtn").disabled = false;
+  }
+  document.getElementById("cartTotal").textContent = formatPrice(getTotal());
+}
+
+function openCart() {
+  renderCartModal();
+  document.getElementById("overlay").classList.add("show");
+}
+
+function closeCart() {
+  document.getElementById("overlay").classList.remove("show");
+}
+
+function closeCartOutside(e) {
+  if (e.target.id === "overlay") closeCart();
+}
+
+document.getElementById("custMode").addEventListener("change", (e) => {
+  document.getElementById("addressGroup").style.display =
+    e.target.value === "Envío a domicilio" ? "block" : "none";
+});
+
+function enviarPedido() {
+  const entries = Object.values(cart);
+  if (entries.length === 0) return;
+
+  const nombre = document.getElementById("custName").value.trim();
+  const modo = document.getElementById("custMode").value;
+  const direccion = document.getElementById("custAddress").value.trim();
+  const notas = document.getElementById("custNotes").value.trim();
+
+  if (!nombre) {
+    alert("Por favor ingresá tu nombre");
+    return;
+  }
+  if (modo === "Envío a domicilio" && !direccion) {
+    alert("Por favor ingresá la dirección de envío");
+    return;
+  }
+
+  let mensaje = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n`;
+  entries.forEach(c => {
+    mensaje += `• ${c.cantidad}x ${c.producto.nombre} — ${formatPrice(c.producto.precio * c.cantidad)}\n`;
+  });
+  mensaje += `\n*Total: ${formatPrice(getTotal())}*\n\n`;
+  mensaje += `👤 *Nombre:* ${nombre}\n`;
+  mensaje += `📦 *Modalidad:* ${modo}\n`;
+  if (modo === "Envío a domicilio") {
+    mensaje += `📍 *Dirección:* ${direccion}\n`;
+  }
+  if (notas) {
+    mensaje += `📝 *Aclaraciones:* ${notas}\n`;
+  }
+
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
+
+// Inicialización
+renderCategories();
+renderMenu();
+updateCartBar();
+</script>
+
+</body>
+</html>
