@@ -12,7 +12,6 @@
     --primary: #2e7d32;
     --primary-hover: #388e3c;
     --primary-light: rgba(46, 125, 50, 0.25);
-    --dark: #1b4332;
     --bg: #000000;
     --card-bg: #0a0a0c;
     --card-border: #1e1e24;
@@ -38,34 +37,79 @@
   header {
     background: linear-gradient(180deg, #141419 0%, #000000 100%);
     color: white;
-    padding: 50px 20px 32px;
+    padding: 40px 20px 24px;
     text-align: center;
     border-bottom: 1px solid var(--card-border);
   }
 
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+  }
+
   header h1 {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: -0.5px;
   }
 
   header p {
     color: var(--muted);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
   }
 
-  /* Categorías */
-  .categories-wrapper {
+  /* Buscador & Categorías */
+  .top-controls {
     position: sticky;
     top: 0;
     background: rgba(0, 0, 0, 0.92);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     z-index: 10;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--card-border);
+  }
+
+  .search-container {
+    max-width: 800px;
+    margin: 0 auto 10px;
+    padding: 0 16px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 14px;
+    border: 1px solid #272730;
+    background: #121216;
+    color: white;
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--primary);
   }
 
   .categories {
@@ -73,17 +117,19 @@
     gap: 10px;
     overflow-x: auto;
     padding: 0 16px;
+    max-width: 800px;
+    margin: 0 auto;
     scrollbar-width: none;
   }
   .categories::-webkit-scrollbar { display: none; }
 
   .cat-btn {
     flex: 0 0 auto;
-    padding: 10px 22px;
+    padding: 8px 18px;
     border-radius: 99px;
     background: #121216;
     border: 1px solid #272730;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--muted);
     cursor: pointer;
@@ -107,7 +153,7 @@
   .section-title {
     font-size: 1.35rem;
     font-weight: 800;
-    margin: 32px 0 18px;
+    margin: 28px 0 16px;
     color: #ffffff;
     letter-spacing: -0.3px;
   }
@@ -128,12 +174,28 @@
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
   }
 
   .item:hover {
     transform: translateY(-4px);
     border-color: var(--card-border-hover);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+  }
+
+  .product-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 99px;
+    z-index: 2;
   }
 
   .item-img-container {
@@ -210,9 +272,7 @@
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
   }
 
-  .add-btn:active {
-    transform: scale(0.96);
-  }
+  .add-btn:active { transform: scale(0.96); }
 
   .qty-control {
     display: flex;
@@ -237,11 +297,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s;
-  }
-
-  .qty-control button:hover {
-    background: rgba(255, 255, 255, 0.35);
   }
 
   .qty-control span {
@@ -274,11 +329,7 @@
     transition: transform 0.2s, background-color 0.2s;
   }
 
-  .cart-bar:hover {
-    background: #18181f;
-    border-color: #3f3f50;
-  }
-
+  .cart-bar:hover { background: #18181f; border-color: #3f3f50; }
   .cart-bar:active { transform: scale(0.98); }
   .cart-bar.show { display: flex; }
 
@@ -321,7 +372,7 @@
     color: white;
     width: 100%;
     max-width: 600px;
-    max-height: 85vh;
+    max-height: 88vh;
     border-radius: 28px 28px 0 0;
     border-top: 1px solid #272730;
     display: flex;
@@ -353,12 +404,6 @@
     font-size: 1rem;
     cursor: pointer;
     color: var(--muted);
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .close-btn:hover {
-    background: #272730;
-    color: white;
   }
 
   .cart-items {
@@ -387,11 +432,6 @@
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .cart-item-remove:hover {
-    background: rgba(239, 68, 68, 0.3);
   }
 
   .empty-cart {
@@ -437,7 +477,6 @@
     background: #121216;
     color: white;
     outline: none;
-    transition: border-color 0.2s;
   }
 
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
@@ -460,22 +499,9 @@
     justify-content: center;
     gap: 8px;
     box-shadow: 0 4px 14px rgba(46, 125, 50, 0.35);
-    transition: background 0.2s, transform 0.1s;
   }
 
-  .checkout-btn:hover:not(:disabled) {
-    background: var(--primary-hover);
-  }
-
-  .checkout-btn:active:not(:disabled) {
-    transform: scale(0.99);
-  }
-
-  .checkout-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
+  .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
   footer {
     text-align: center;
@@ -489,11 +515,18 @@
 <body>
 
 <header>
+  <div class="status-badge">
+    <span class="status-dot"></span>
+    Abierto hoy de 19:00 a 00:00 hs
+  </div>
   <h1>🍔 Mi Negocio</h1>
-  <p>Hacé tu pedido y te lo confirmamos por WhatsApp</p>
+  <p>Hacé tu pedido online y te lo confirmamos por WhatsApp</p>
 </header>
 
-<div class="categories-wrapper">
+<div class="top-controls">
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar producto..." oninput="filterMenu()">
+  </div>
   <div class="categories" id="categories"></div>
 </div>
 
@@ -524,20 +557,37 @@
         <label>Tu nombre</label>
         <input type="text" id="custName" placeholder="Ej: Juan Pérez">
       </div>
+      
       <div class="form-group">
-        <label>Modalidad</label>
+        <label>Modalidad de Entrega</label>
         <select id="custMode">
           <option value="Retiro en local">Retiro en local</option>
           <option value="Envío a domicilio">Envío a domicilio</option>
         </select>
       </div>
+
       <div class="form-group" id="addressGroup" style="display:none;">
         <label>Dirección de envío</label>
-        <input type="text" id="custAddress" placeholder="Calle, número, depto...">
+        <input type="text" id="custAddress" placeholder="Calle, número, piso/depto...">
       </div>
+
       <div class="form-group">
-        <label>Aclaraciones (opcional)</label>
-        <textarea id="custNotes" rows="2" placeholder="Ej: Sin cebolla, pagar con débito..."></textarea>
+        <label>Método de Pago</label>
+        <select id="custPayment">
+          <option value="Mercado Pago / Transferencia">Mercado Pago / Transferencia</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta de Débito/Crédito">Tarjeta de Débito / Crédito</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="cashGroup" style="display:none;">
+        <label>Pagas en efectivo ¿Con cuánto abonás?</label>
+        <input type="text" id="custChange" placeholder="Ej: Pago con $10.000 para llevar cambio">
+      </div>
+
+      <div class="form-group">
+        <label>Aclaraciones / Notas (opcional)</label>
+        <textarea id="custNotes" rows="2" placeholder="Ej: Sin cebolla, aderezo aparte..."></textarea>
       </div>
 
       <button class="checkout-btn" id="checkoutBtn" onclick="enviarPedido()">
@@ -551,7 +601,7 @@
 
 <script>
 /* ============================================================
-   CONFIGURACIÓN — EDITÁ TUS DATOS Y PRODUCTOS AQUÍ
+   CONFIGURACIÓN Y DATOS
    ============================================================ */
 
 const WHATSAPP_NUMBER = "5492281552807"; 
@@ -565,6 +615,7 @@ const MENU = [
         nombre: "Hamburguesa Clásica", 
         desc: "Carne jugosa, queso cheddar, lechuga fresca, tomate y salsa especial.", 
         precio: 4500,
+        tag: "🔥 Más Vendida",
         imagen: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80" 
       },
       { 
@@ -572,6 +623,7 @@ const MENU = [
         nombre: "Hamburguesa Doble Cheddar", 
         desc: "Doble carne artesanal, doble queso cheddar fundido y panceta crocante.", 
         precio: 6200,
+        tag: "⭐ Recomendado",
         imagen: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800&q=80" 
       },
       { 
@@ -579,6 +631,7 @@ const MENU = [
         nombre: "Hamburguesa Veggie", 
         desc: "Medallón de garbanzos y especias, palta fresca, rúcula y mayo veggie.", 
         precio: 4800,
+        tag: "🌱 Veggie",
         imagen: "https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?w=800&q=80" 
       },
     ]
@@ -596,8 +649,9 @@ const MENU = [
       { 
         id: 5, 
         nombre: "Papas Cheddar & Bacon", 
-        desc: "Porción abundante bañada en abundante queso cheddar y panceta tostada.", 
+        desc: "Porción abundante bañada en queso cheddar y panceta tostada.", 
         precio: 3500,
+        tag: "🔥 Populares",
         imagen: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=800&q=80" 
       },
     ]
@@ -624,10 +678,15 @@ const MENU = [
 ];
 
 /* ============================================================
-   LÓGICA DEL SISTEMA
+   ESTADO Y LÓGICA
    ============================================================ */
 
-let cart = {}; 
+// Cargar carrito del localStorage
+let cart = JSON.parse(localStorage.getItem("menu_cart") || "{}");
+
+function saveCart() {
+  localStorage.setItem("menu_cart", JSON.stringify(cart));
+}
 
 function formatPrice(n) {
   return "$" + n.toLocaleString("es-AR");
@@ -649,10 +708,18 @@ function renderCategories() {
   });
 }
 
-function renderMenu() {
+function renderMenu(filterText = "") {
   const main = document.getElementById("menu");
   main.innerHTML = "";
+
   MENU.forEach((cat, idx) => {
+    const filteredProds = cat.productos.filter(p => 
+      p.nombre.toLowerCase().includes(filterText.toLowerCase()) || 
+      p.desc.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    if (filteredProds.length === 0) return;
+
     const title = document.createElement("div");
     title.className = "section-title";
     title.id = "cat-" + idx;
@@ -662,12 +729,13 @@ function renderMenu() {
     const grid = document.createElement("div");
     grid.className = "products-grid";
 
-    cat.productos.forEach(prod => {
+    filteredProds.forEach(prod => {
       const item = document.createElement("div");
       item.className = "item";
       
+      const tagHTML = prod.tag ? `<div class="product-tag">${prod.tag}</div>` : '';
       const imgHTML = prod.imagen 
-        ? `<div class="item-img-container"><img src="${prod.imagen}" alt="${prod.nombre}" class="item-img" loading="lazy"></div>` 
+        ? `<div class="item-img-container">${tagHTML}<img src="${prod.imagen}" alt="${prod.nombre}" class="item-img" loading="lazy"></div>` 
         : '';
 
       item.innerHTML = `
@@ -687,8 +755,13 @@ function renderMenu() {
     });
 
     main.appendChild(grid);
-    cat.productos.forEach(prod => renderControls(prod));
+    filteredProds.forEach(prod => renderControls(prod));
   });
+}
+
+function filterMenu() {
+  const text = document.getElementById("searchInput").value;
+  renderMenu(text);
 }
 
 function renderControls(prod) {
@@ -718,6 +791,7 @@ function findProduct(id) {
 function addToCart(id) {
   const prod = findProduct(id);
   cart[id] = { producto: prod, cantidad: 1 };
+  saveCart();
   renderControls(prod);
   updateCartBar();
 }
@@ -728,6 +802,7 @@ function changeQty(id, delta) {
   if (cart[id].cantidad <= 0) {
     delete cart[id];
   }
+  saveCart();
   renderControls(findProduct(id));
   updateCartBar();
   renderCartModal();
@@ -783,11 +858,18 @@ function closeCartOutside(e) {
   if (e.target.id === "overlay") closeCart();
 }
 
+// Controladores para mostrar campos dinámicos
 document.getElementById("custMode").addEventListener("change", (e) => {
   document.getElementById("addressGroup").style.display =
     e.target.value === "Envío a domicilio" ? "block" : "none";
 });
 
+document.getElementById("custPayment").addEventListener("change", (e) => {
+  document.getElementById("cashGroup").style.display =
+    e.target.value === "Efectivo" ? "block" : "none";
+});
+
+// Enviar a WhatsApp con Ticket
 function enviarPedido() {
   const entries = Object.values(cart);
   if (entries.length === 0) return;
@@ -795,6 +877,8 @@ function enviarPedido() {
   const nombre = document.getElementById("custName").value.trim();
   const modo = document.getElementById("custMode").value;
   const direccion = document.getElementById("custAddress").value.trim();
+  const pago = document.getElementById("custPayment").value;
+  const cambio = document.getElementById("custChange").value.trim();
   const notas = document.getElementById("custNotes").value.trim();
 
   if (!nombre) {
@@ -806,22 +890,35 @@ function enviarPedido() {
     return;
   }
 
-  let mensaje = `¡Hola! 👋 Quiero hacer el siguiente pedido:\n\n`;
+  // Generar ID de pedido aleatorio
+  const orderId = "#PED-" + Math.floor(1000 + Math.random() * 9000);
+
+  let mensaje = `📋 *NUEVO PEDIDO ${orderId}*\n\n`;
   entries.forEach(c => {
     mensaje += `• ${c.cantidad}x ${c.producto.nombre} — ${formatPrice(c.producto.precio * c.cantidad)}\n`;
   });
-  mensaje += `\n*Total: ${formatPrice(getTotal())}*\n\n`;
-  mensaje += `👤 *Nombre:* ${nombre}\n`;
+  mensaje += `\n*TOTAL: ${formatPrice(getTotal())}*\n\n`;
+  mensaje += `👤 *Cliente:* ${nombre}\n`;
   mensaje += `📦 *Modalidad:* ${modo}\n`;
   if (modo === "Envío a domicilio") {
     mensaje += `📍 *Dirección:* ${direccion}\n`;
+  }
+  mensaje += `💳 *Pago:* ${pago}\n`;
+  if (pago === "Efectivo" && cambio) {
+    mensaje += `💵 *Abona con:* ${cambio}\n`;
   }
   if (notas) {
     mensaje += `📝 *Aclaraciones:* ${notas}\n`;
   }
 
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+  
+  // Limpiar carrito al enviar
+  cart = {};
+  saveCart();
+  
   window.open(url, "_blank");
+  location.reload();
 }
 
 // Inicialización
